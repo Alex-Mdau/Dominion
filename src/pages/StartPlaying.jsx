@@ -8,7 +8,7 @@ import {
   findTerritoryAt,
   persistence,
 } from '../game/state'
-import { BUILDINGS } from '../game/constants'
+import { BUILDINGS, FACTIONS } from '../game/constants'
 import { supabase, PLAYER_TABLE, TERRITORY_TABLE } from '../lib/supabase'
 import MapView from '../components/MapView'
 import HUD from '../components/HUD'
@@ -48,6 +48,16 @@ export default function StartPlaying({ setPage }) {
       return next
     })
   }, [])
+
+  const chooseFaction = async (id) => {
+    setState((s) => {
+      const next = { ...s }
+      next.faction = id
+      addNotification(next, { type: 'success', message: `Sworn to the ${FACTIONS[id].name}` })
+      return next
+    })
+    await registerPlayer(id)
+  }
 
   const registerPlayer = async (faction) => {
     if (!supabase) return
@@ -138,7 +148,16 @@ export default function StartPlaying({ setPage }) {
         <div className="empty-state">
           <h2>Pick a faction to begin</h2>
           <p>Choose your allegiance, then head out to capture territory around RCMRD.</p>
-          <button className="btn btn-primary" onClick={() => setPage('factions')}>Choose Faction</button>
+          <div style={{display:'flex',gap:8,flexDirection:'column'}}>
+            {Object.values(FACTIONS).map((f) => (
+              <button key={f.id} className="btn btn-primary small" onClick={() => chooseFaction(f.id)}>
+                {f.dot} {f.name}
+              </button>
+            ))}
+          </div>
+          <button className="btn btn-secondary small" style={{marginTop:10}} onClick={() => setPage('factions')}>
+            View Faction Details
+          </button>
         </div>
       ) : (
         <>
@@ -161,7 +180,7 @@ export default function StartPlaying({ setPage }) {
               <button className={`tab ${panel === 'territories' ? 'active' : ''}`} onClick={() => setPanel('territories')}>Territories</button>
             </div>
             <div className="panel-content">
-              {panel === 'hud' && <HUD state={state} />}
+              {panel === 'hud' && <HUD state={state} setPanel={setPanel} />}
               {panel === 'build' && <BuildMenu state={state} onBuild={build} onBattle={startBattle} />}
               {panel === 'territories' && (
                 <div className="section">

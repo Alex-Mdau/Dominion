@@ -4,7 +4,7 @@ export default function About({ setPage }) {
       <div className="container">
         <h1>About Dominion</h1>
         <p className="lead">
-          A location-based strategy game played on a real-world map of RCMRD.
+          A location-based strategy game played on a real-world map.
           The Buildings, Fields, Gardens and areas around you become regions that
           you can capture, develop and defend.
         </p>

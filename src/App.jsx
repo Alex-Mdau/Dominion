@@ -38,10 +38,10 @@ export default function App() {
       <button className="nav-toggle" onClick={() => setNavOpen(!navOpen)}>☰</button>
       <Nav page={page} setPage={setPage} navOpen={navOpen} setNavOpen={setNavOpen} />
       <div className={`page-wrap ${navOpen ? 'nav-open' : ''}`}>
-        {page === 'home' && <Home />}
+        {page === 'home' && <Home setPage={setPage} />}
         {page === 'instructions' && <Instructions />}
         {page === 'about' && <About setPage={setPage} />}
-        {page === 'factions' && <Factions setPage={setPage} />}
+        {page === 'factions' && <Factions setPage={setPage} onChoose={() => setPage('start')} />}
         {page === 'start' && <StartPlaying setPage={setPage} />}
         {page === 'leaderboard' && <Leaderboard />}
       </div>

@@ -1,6 +1,6 @@
 import { RESOURCES, FACTIONS } from '../game/constants'
 
-export default function HUD({ state }) {
+export default function HUD({ state, setPanel }) {
   const faction = state.faction ? FACTIONS[state.faction] : null
   const rows = Object.values(RESOURCES).map((r) => {
     const val = state.resources[r.id] ?? 0
@@ -28,7 +28,7 @@ export default function HUD({ state }) {
       <div className="section">
         <div className="section-title">Quick Build</div>
         <p style={{fontSize:'12px',color:'#94a3b8',marginBottom:10}}>Tap a territory on the map, then build.</p>
-        <button className="btn secondary small" style={{marginBottom:0}}>Open Build Menu</button>
+        <button className="btn secondary small" style={{marginBottom:0}} onClick={() => setPanel('build')}>Open Build Menu</button>
       </div>
     </div>
   )
