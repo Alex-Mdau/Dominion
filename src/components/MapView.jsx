@@ -13,6 +13,7 @@ export default function MapView({ position, territories, buildings, faction, onC
       map.setView([position.lat, position.lng], 15)
       setViewSet(true)
     }
+    map?.invalidateSize()
   }, [position, map, viewSet])
 
   const handleMapClick = useCallback((e) => {
@@ -38,7 +39,7 @@ export default function MapView({ position, territories, buildings, faction, onC
   buildings.forEach((b) => { buildingByTerritory[b.territoryId] = b })
 
   return (
-    <div className="map-wrap" style={{ height: '100%', width: '100%' }}>
+    <div className="map-wrap" style={{ width: '100%' }}>
       <MapContainer
         center={[position?.lat ?? -1.2921, position?.lng ?? 36.8219]}
         zoom={15}
