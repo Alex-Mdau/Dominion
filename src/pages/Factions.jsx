@@ -28,6 +28,7 @@ export default function Factions({ setPage, onChoose }) {
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           {Object.values(FACTIONS).map((f) => (
             <button key={f.id} className="btn btn-secondary small" onClick={() => {
+              localStorage.setItem('dominion_faction', f.id)
               if (onChoose) onChoose(f.id)
               setPage('start')
             }}>

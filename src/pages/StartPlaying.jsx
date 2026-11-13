@@ -16,7 +16,12 @@ import BuildMenu from '../components/BuildMenu'
 import BattleView from '../components/BattleView'
 
 export default function StartPlaying({ setPage }) {
-  const [state, setState] = useState(() => persistence.load() || initialState())
+  const [state, setState] = useState(() => {
+    const saved = persistence.load() || initialState()
+    const savedFaction = localStorage.getItem('dominion_faction')
+    if (savedFaction && !saved.faction) saved.faction = savedFaction
+    return saved
+  })
   const [battle, setBattle] = useState(null)
   const [captureLatLng, setCaptureLatLng] = useState(null)
   const [playerId, setPlayerId] = useState(() => localStorage.getItem('dominion_player_id') || null)
@@ -25,9 +30,13 @@ export default function StartPlaying({ setPage }) {
   const saveRef = useRef(null)
 
   useEffect(() => {
+    if (!state.faction) {
+      setPage('factions')
+      return
+    }
     saveRef.timeout = setTimeout(() => persistence.save(state), 500)
     return () => clearTimeout(saveRef.timeout)
-  }, [state])
+  }, [state, setPage])
 
   useEffect(() => {
     if (!state.faction) return
